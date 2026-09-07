@@ -1,30 +1,14 @@
-# OPEN QUIZ v6
+# OPEN QUIZ v7.1
 
-本番向け改良版のプロトタイプです。
+Changes:
+- Adds a third mode button: PC (host), respondent, projector.
+- Projector mode can be selected from the same landing screen by entering the room code.
+- Also supports direct projector URL: /display?room=ROOMCODE
+- Projector shows question and optional question image.
+- During answering it shows only each participant's LOCK status.
+- During grading it shows only 採点中.
+- When host publishes, it shows all participants' 〇/× and answer images.
+- Keeps v6 scoring, 90-second timer, up to 8 participants, QR join, and per-question optional image upload.
+- Explicit /display route avoids "Cannot GET" for projector mode.
 
-- 最大8人
-- 問題数を1〜20問から司会者が選択
-- 1問90秒のサーバー基準タイマー
-- 時間切れで自動締切
-- QRコード参加（公開URLで使う場合）
-- 4G/5G/Wi-Fiから参加できる構成に対応（インターネット公開が必要）
-- Socket.IO自動再接続＋ルーム復帰トークン
-- 回答キャンバスの一時保存
-- LOCK後に司会者だけ採点
-- 全員採点後に3・2・1一斉公開
-- 参加者には自分の〇×だけ表示
-- 最終結果はグループ別・個人別
-
-## ローカルテスト
-
-PowerShell:
-
-    npm install
-    $env:PORT=3002
-    npm start
-
-ブラウザ:
-
-    http://localhost:3002
-
-※ 4G/5Gの本番利用には、このアプリをインターネットからアクセスできるサーバーへ公開し、公開URLのQRコードを使用してください。
+ZIP structure is flat: server.js, package.json, public/index.html.
