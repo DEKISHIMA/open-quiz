@@ -1,14 +1,28 @@
-# OPEN QUIZ v7.1
+# OPEN QUIZ 改良版（文化祭運用向け）
 
-Changes:
-- Adds a third mode button: PC (host), respondent, projector.
-- Projector mode can be selected from the same landing screen by entering the room code.
-- Also supports direct projector URL: /display?room=ROOMCODE
-- Projector shows question and optional question image.
-- During answering it shows only each participant's LOCK status.
-- During grading it shows only 採点中.
-- When host publishes, it shows all participants' 〇/× and answer images.
-- Keeps v6 scoring, 90-second timer, up to 8 participants, QR join, and per-question optional image upload.
-- Explicit /display route avoids "Cannot GET" for projector mode.
+## 今回の主な変更
+- 最大8人で参加。チーム／グループ入力・グループ得点を廃止し、個人得点のみ。
+- 1問の制限時間を **80秒** に変更。
+- 各参加者の **HELPはゲーム中1回**。最初にサーバーで受け付けた1人だけを司会者PC・プロジェクターに表示。使用後は0回になり、問題をまたいでも復活しない。HELPは80秒タイマーを止めない。司会者の「対応終了」で表示を消せる。
+- **全体15分タイマー**を「ゲームスタート」で開始。問題ごとの80秒タイマーとは独立。
+- 結果公開後は **6秒で自動的に次の問題へ**。最終問題後は自動で最終結果へ。
+- プロジェクターは部屋番号入力ではなく、ログイン後に **現在のクイズ一覧から選択**。
+- 参加者数を **8人満員** として表示。
+- **緊急停止／再開**を追加。停止中は問題タイマー・全体タイマーを進めない。
+- 再接続用トークンは従来どおり利用。
 
-ZIP structure is flat: server.js, package.json, public/index.html.
+## 15分到達時
+全体タイマーが0になると、その時点の問題を自動的に時間切れにして未LOCK者もLOCK扱いにします。司会者が採点を行い、通常どおり結果公開→自動進行します。
+
+## 起動
+```bash
+npm install
+npm start
+```
+RenderではNode Web Serviceとして、Start Commandを `npm start` にしてください。
+
+## 環境変数
+- `ADMIN_PASSWORD`：司会者・プロジェクターのログインパスワード（未設定時は旧デフォルト値）。
+- `DATABASE_URL`：問題セット・追加問題をPostgreSQLへ保存する場合に設定。
+
+※進行中のルーム状態はメモリ上です。文化祭本番ではRenderの再起動を避け、必要なら後からRedis等の永続化を追加してください。
